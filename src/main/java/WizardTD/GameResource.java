@@ -176,7 +176,7 @@ public class GameResource {
 
     if ((!top && !bottom && left && !right)) {
       t.setImage(path0);
-      if (j == tiles.length) {
+      if (j == tiles.length - 1) {
         t.setStart(Vector.LEFT);
         spawnTiles.add((PathTile) tiles[i][j]);
       }
@@ -188,7 +188,7 @@ public class GameResource {
       }
     } else if ((top && !bottom && !left && !right)) {
       t.setImage(App.rotateImageByDegrees(path0, 90, app));
-      if (i == tiles.length) {
+      if (i == tiles.length - 1) {
         t.setStart(Vector.UP);
         spawnTiles.add((PathTile) tiles[i][j]);
       }
@@ -279,7 +279,7 @@ public class GameResource {
       List<ManipulatedTile> roadTiles = pf.getShortestPath(spawnTile, wizardHouseTile);
       List<Tuple<Vector, Float>> map = new ArrayList<>();
       Vector initialVector = Vector.get(roadTiles.get(0), null);
-      Float constrain = 26f;
+      float constrain = 26;
       for (int i = 0; i < roadTiles.size() - 1; i++) {
         Vector vector = Vector.get(roadTiles.get(i), roadTiles.get(i + 1));
         if (initialVector == vector)
@@ -287,7 +287,7 @@ public class GameResource {
         else {
           map.add(new Tuple<Vector, Float>(initialVector, constrain));
           initialVector = vector;
-          constrain = 32f;
+          constrain = 32;
         }
       }
       possibleRoad.add(new Navigation(spawnTile, map));

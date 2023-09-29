@@ -42,4 +42,10 @@ public abstract class ManipulatedTile extends Tile {
 
     return neighbors;
   }
+
+  public void resetState() {
+    prevTile = null;
+    g = 0;
+    f = 0;
+  }
 }

@@ -260,17 +260,18 @@ public class GameController {
 
     if (towerMode && mana >= towerCost && app.mouseX >= 0 && app.mouseX <= boardSize && app.mouseY >= App.TOPBAR
         && app.mouseY <= App.TOPBAR + boardSize) {
-      mana -= towerCost;
       int i = (app.mouseY - App.TOPBAR) / App.CELLSIZE;
       int j = app.mouseX / App.CELLSIZE;
 
       if (tiles[i][j] instanceof GrassTile) {
+        mana -= towerCost;
         float range = gr.initialTowerRange;
         float damage = gr.initialTowerDamage;
         float firingSpeed = gr.initialTowerFiringSpeed;
         Tower newTower = new Tower(app, this, App.CELLSIZE, App.CELLSIZE, tiles[i][j].getX(), tiles[i][j].getY(),
             gr.tower0, gr.tower1, gr.tower2, range, damage, firingSpeed, isUpgradeRange, isUpgradeFiringSpeed,
             isUpgradeDamage);
+        newTower.setSpeed(gameSpeed);
         towers.add(newTower);
         tiles[i][j] = newTower;
       }

@@ -111,9 +111,9 @@ public abstract class Monster {
       y = spawnTile.getY() - height;
     } else if (spawnTile.getStart() == Vector.UP) {
       x = spawnTile.getX() + ((spawnTile.getWidth() - width) / 2);
-      y = spawnTile.getY() + spawnTile.getHeight() + height;
+      y = spawnTile.getY() + spawnTile.getHeight();
     } else if (spawnTile.getStart() == Vector.LEFT) {
-      x = spawnTile.getX() + spawnTile.getWidth() + width;
+      x = spawnTile.getX() + spawnTile.getWidth();
       y = spawnTile.getY() + ((spawnTile.getHeight() - height) / 2);
     } else if (spawnTile.getStart() == Vector.RIGHT) {
       x = spawnTile.getX() - width;
