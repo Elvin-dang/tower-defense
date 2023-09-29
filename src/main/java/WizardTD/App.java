@@ -84,11 +84,17 @@ public class App extends PApplet {
   public void draw() {
     gui.displayBoard();
     gui.displayMonster();
+    gui.displayTower();
+    gui.displayFireBall();
     gui.displayWizardHouse();
+    gui.displayTowerRange();
     gui.displayTopBar();
     gui.displaySideBar();
-    gui.displayTower();
+    gui.displayTowerUpgradeInfo();
+
+    gui.removeUnusedResource();
     gc.increaseTimer();
+    gui.gameResult();
   }
 
   public static void main(String[] args) {

@@ -5,7 +5,6 @@ import WizardTD.App;
 import processing.core.PImage;
 
 public class PathTile extends ManipulatedTile {
-  // private Direction direction;
   private Vector start;
 
   public PathTile(App app, int height, int width, int x, int y, PImage image) {
@@ -20,13 +19,8 @@ public class PathTile extends ManipulatedTile {
     this.start = start;
   }
 
-  // public void setDirection(Direction direction, Vector start, PImage image) {
-  // this.direction = direction;
-  // this.image = image;
-  // this.start = start;
-  // }
-
-  // public Direction getDirection() {
-  // return direction;
-  // }
+  @Override
+  public Tile duplicate() {
+    return new PathTile(app, height, width, x, y, image);
+  }
 }

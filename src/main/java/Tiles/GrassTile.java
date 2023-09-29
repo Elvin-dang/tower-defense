@@ -8,4 +8,9 @@ public class GrassTile extends Tile {
   public GrassTile(App app, int height, int width, int x, int y, PImage image) {
     super(app, height, width, x, y, image);
   }
+
+  @Override
+  public Tile duplicate() {
+    return new GrassTile(app, height, width, x, y, image);
+  }
 }

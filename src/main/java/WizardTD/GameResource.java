@@ -250,16 +250,22 @@ public class GameResource {
 
   private Monster categorizeMonster(String type, float hp, float speed, float amount, float manaGainedOnKill) {
     if (type.equals("gremlin"))
-      return new Gremlin(app, gremlin, hp, speed, amount, manaGainedOnKill);
+      return new Gremlin(app, this, gremlin, hp, speed, amount, manaGainedOnKill);
     if (type.equals("beetle"))
-      return new Beetle(app, beetle, hp, speed, amount, manaGainedOnKill);
+      return new Beetle(app, this, beetle, hp, speed, amount, manaGainedOnKill);
     if (type.equals("worm"))
-      return new Worm(app, worm, hp, speed, amount, manaGainedOnKill);
+      return new Worm(app, this, worm, hp, speed, amount, manaGainedOnKill);
     return null;
   }
 
   public Tile[][] getTiles() {
-    return tiles;
+    Tile[][] newTiles = new Tile[App.BOARD_WIDTH][App.BOARD_WIDTH];
+    for (int i = 0; i < App.BOARD_WIDTH; i++) {
+      for (int j = 0; j < App.BOARD_WIDTH; j++) {
+        newTiles[i][j] = tiles[i][j].duplicate();
+      }
+    }
+    return newTiles;
   }
 
   public Tile getWizardHouseTile() {

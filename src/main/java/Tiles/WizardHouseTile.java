@@ -15,4 +15,9 @@ public class WizardHouseTile extends ManipulatedTile {
     app.image(grass, x + 8, y + 8, width - 16, height - 16);
     app.image(image, x, y, width, height);
   }
+
+  @Override
+  public Tile duplicate() {
+    return new WizardHouseTile(app, height, width, x, y, image, grass);
+  }
 }

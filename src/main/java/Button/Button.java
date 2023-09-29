@@ -1,9 +1,11 @@
 package Button;
 
 import WizardTD.App;
+import WizardTD.GameController;
 
 public abstract class Button implements Clickable, Hoverable, HotKeyMountable {
   protected final App app;
+  protected final GameController gc;
   protected int x;
   protected int y;
   protected String description;
@@ -15,8 +17,10 @@ public abstract class Button implements Clickable, Hoverable, HotKeyMountable {
   protected boolean isHovered = false;
   protected int cost = 0;
 
-  public Button(App app, int x, int y, String description, String name, char hotKey, boolean showTooltip) {
+  public Button(App app, GameController gc, int x, int y, String description, String name, char hotKey,
+      boolean showTooltip) {
     this.app = app;
+    this.gc = gc;
     this.x = x;
     this.y = y;
     this.description = description;

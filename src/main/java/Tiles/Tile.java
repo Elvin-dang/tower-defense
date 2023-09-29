@@ -51,4 +51,6 @@ public abstract class Tile {
   public int getWidth() {
     return width;
   }
+
+  public abstract Tile duplicate();
 }

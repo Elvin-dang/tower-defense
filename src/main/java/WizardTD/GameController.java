@@ -6,6 +6,14 @@ import java.util.Map;
 import java.util.Random;
 
 import Button.Button;
+import Button.FastForwardButton;
+import Button.PauseButton;
+import Button.BuildTowerButton;
+import Button.UpgradeRangeButton;
+import Button.UpgradeSpeedButton;
+import Button.UpgradeDamageButton;
+import Button.ManaPoolButton;
+import Fireball.Fireball;
 import Monsters.Monster;
 import Monsters.Wave;
 import Navigation.Navigation;
@@ -29,21 +37,26 @@ public class GameController {
   private float manaGainPerSecond;
   private float additionalManaGainMultiplier = 0;
   private float poolManaCost;
-  private long countDown;
 
+  private Tile[][] tiles;
   private List<Tuple<Long, Monster>> monsters;
   private List<Tower> towers;
+  private List<Fireball> fireballs;
   private List<Tuple<Integer, Long>> waveInfo;
   private List<Button> buttons;
 
   private long timer = 0;
+  private long countDown = 0;
+  private boolean isLose = false;
 
   public GameController(App app, GameResource gr) {
     this.app = app;
     this.gr = gr;
 
+    tiles = gr.getTiles();
     monsters = new ArrayList<>();
     towers = new ArrayList<>();
+    fireballs = new ArrayList<>();
     waveInfo = new ArrayList<>();
     buttons = new ArrayList<>();
 
@@ -76,6 +89,7 @@ public class GameController {
           int randomNavigationIndex = random.nextInt(navigationList.size());
           Monster newMonster = entry.getKey().duplicate();
           newMonster.setNavigation(navigationList.get(randomNavigationIndex));
+          newMonster.setGameController(this);
           waveMonsters.add(randomPosition, newMonster);
         }
       }
@@ -88,11 +102,12 @@ public class GameController {
 
       totalDelay += wave.getDuration() * 1000;
 
-      if (i == 0)
+      if (i == 0) {
         waveInfo.add(new Tuple<Integer, Long>(i + 1, (long) (wave.getPreWavePause() * 1000)));
-      else
+      } else {
         waveInfo.add(
             new Tuple<Integer, Long>(i + 1, (long) ((wave.getPreWavePause() + waves.get(i - 1).getDuration()) * 1000)));
+      }
     }
 
     waveInfo.add(new Tuple<Integer, Long>(-1, 0L));
@@ -103,159 +118,52 @@ public class GameController {
   }
 
   private void generateButtons() {
-    Button fastForward = new Button(app, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 10, "2x speed", "FF", 'f',
-        false) {
-
-      @Override
-      public void toggleOn() {
-        changeGameSpeed(2);
-      }
-
-      @Override
-      public void toggleOff() {
-        if (gameSpeed == 2)
-          changeGameSpeed(1);
-      }
-
-      @Override
-      public void onHover() {
-      }
-
-    };
-    buttons.add(fastForward);
-
-    Button pause = new Button(app, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 60, "PAUSE", "P", 'p', false) {
-
-      @Override
-      public void toggleOn() {
-        changeGameSpeed(0);
-      }
-
-      @Override
-      public void toggleOff() {
-        if (gameSpeed == 0)
-          changeGameSpeed(1);
-      }
-
-      @Override
-      public void onHover() {
-      }
-
-    };
-    buttons.add(pause);
-
-    Button buildTower = new Button(app, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 110, "Build tower", "T",
-        't', true) {
-
-      @Override
-      public void toggleOn() {
-        towerMode = true;
-      }
-
-      @Override
-      public void toggleOff() {
-        towerMode = false;
-      }
-
-      @Override
-      public void onHover() {
-        cost = (int) gr.towerCost + isUpgradeRange * 20 + isUpgradeDamage * 20 + isUpgradeFiringSpeed * 20;
-      }
-
-    };
-    buttons.add(buildTower);
-
-    Button upgradeRange = new Button(app, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 160, "Upgrade range", "U1",
-        '1', false) {
-
-      @Override
-      public void toggleOn() {
-        isUpgradeRange = 1;
-      }
-
-      @Override
-      public void toggleOff() {
-        isUpgradeRange = 0;
-      }
-
-      @Override
-      public void onHover() {
-      }
-
-    };
-    buttons.add(upgradeRange);
-
-    Button upgradeSpeed = new Button(app, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 210, "Upgrade speed", "U2",
-        '2', false) {
-
-      @Override
-      public void toggleOn() {
-        isUpgradeFiringSpeed = 1;
-      }
-
-      @Override
-      public void toggleOff() {
-        isUpgradeFiringSpeed = 0;
-      }
-
-      @Override
-      public void onHover() {
-      }
-
-    };
-    buttons.add(upgradeSpeed);
-
-    Button upgradeDamage = new Button(app, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 260, "Upgrade damage",
-        "U3", '3', false) {
-
-      @Override
-      public void toggleOn() {
-        isUpgradeDamage = 1;
-      }
-
-      @Override
-      public void toggleOff() {
-        isUpgradeDamage = 0;
-      }
-
-      @Override
-      public void onHover() {
-      }
-
-    };
-    buttons.add(upgradeDamage);
-
-    Button manaPool = new Button(app, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 310,
-        "Mana pool cost: " + (int) poolManaCost,
-        "M", 'm', true) {
-
-      @Override
-      public void toggleOn() {
-        if (mana >= poolManaCost) {
-          mana -= poolManaCost;
-          manaCap *= gr.manaPoolSpellCapMultiplier;
-          additionalManaGainMultiplier += gr.manaPoolSpellManaGainedMultiplier - 1;
-          poolManaCost += gr.manaPoolSpellCostIncreasePerUse;
-          description = "Mana pool cost: " + (int) poolManaCost;
-        }
-        isClicked = false;
-      }
-
-      @Override
-      public void toggleOff() {
-      }
-
-      @Override
-      public void onHover() {
-        cost = (int) poolManaCost;
-      }
-
-    };
-    buttons.add(manaPool);
+    buttons.add(new FastForwardButton(app, this, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 10, "2x speed", "FF",
+        'f', false));
+    buttons.add(
+        new PauseButton(app, this, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 60, "PAUSE", "P", 'p', false));
+    buttons.add(new BuildTowerButton(app, this, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 110, "Build tower",
+        "T", 't', true));
+    buttons.add(new UpgradeRangeButton(app, this, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 160,
+        "Upgrade range", "U1", '1', false));
+    buttons.add(new UpgradeSpeedButton(app, this, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 210,
+        "Upgrade speed", "U2", '2', false));
+    buttons.add(new UpgradeDamageButton(app, this, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 260,
+        "Upgrade damage", "U3", '3', false));
+    buttons.add(new ManaPoolButton(app, this, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 310,
+        "Mana pool cost: " + (int) poolManaCost, "M", 'm', true));
   }
 
   public List<Button> getButtons() {
     return buttons;
+  }
+
+  public Tile[][] getTiles() {
+    return tiles;
+  }
+
+  public boolean isTowerMode() {
+    return towerMode;
+  }
+
+  public void setTowerMode(boolean towerMode) {
+    this.towerMode = towerMode;
+  }
+
+  public void setIsUpgradeRange(int isUpgradeRange) {
+    this.isUpgradeRange = isUpgradeRange;
+  }
+
+  public void setIsUpgradeDamage(int isUpgradeDamage) {
+    this.isUpgradeDamage = isUpgradeDamage;
+  }
+
+  public void setIsUpgradeFiringSpeed(int isUpgradeFiringSpeed) {
+    this.isUpgradeFiringSpeed = isUpgradeFiringSpeed;
+  }
+
+  public int getGameSpeed() {
+    return gameSpeed;
   }
 
   public void setCountDown(long countDown) {
@@ -285,10 +193,16 @@ public class GameController {
     return timer;
   }
 
-  private void changeGameSpeed(int value) {
+  public void changeGameSpeed(int value) {
     gameSpeed = value;
     for (Tuple<Long, Monster> tuple : monsters) {
       tuple.getValue().setSpeed(gameSpeed);
+    }
+    for (Tower tower : towers) {
+      tower.setSpeed(gameSpeed);
+    }
+    for (Fireball fireball : fireballs) {
+      fireball.setSpeed(gameSpeed);
     }
   }
 
@@ -304,15 +218,49 @@ public class GameController {
     return mana;
   }
 
-  public void setMana(float mana) {
-    this.mana = mana;
+  public void gainMana(float amount) {
+    mana += amount * (1 + additionalManaGainMultiplier);
+    if (mana > manaCap) {
+      mana = manaCap;
+    }
+  }
+
+  public void dropManaByMonster(float amount) {
+    mana -= amount;
+    if (mana <= 0) {
+      isLose = true;
+      mana = 0;
+      changeGameSpeed(0);
+    }
+  }
+
+  public void dropMana(float amount) {
+    mana -= amount;
+  }
+
+  public float getPoolManaCost() {
+    return poolManaCost;
+  }
+
+  public void setAdditionalManaGainMultiplier(float additionalManaGainMultiplier) {
+    this.additionalManaGainMultiplier = additionalManaGainMultiplier;
+  }
+
+  public float getAdditionalManaGainMultiplier() {
+    return additionalManaGainMultiplier;
+  }
+
+  public void setPoolManaCost(float poolManaCost) {
+    this.poolManaCost = poolManaCost;
   }
 
   public void onMouseClickedOnTheBoard() {
     int boardSize = App.BOARD_WIDTH * App.CELLSIZE;
-    Tile[][] tiles = gr.getTiles();
-    if (towerMode && app.mouseX >= 0 && app.mouseX <= boardSize && app.mouseY >= App.TOPBAR
+    int towerCost = (int) gr.towerCost + isUpgradeRange * 20 + isUpgradeDamage * 20 + isUpgradeFiringSpeed * 20;
+
+    if (towerMode && mana >= towerCost && app.mouseX >= 0 && app.mouseX <= boardSize && app.mouseY >= App.TOPBAR
         && app.mouseY <= App.TOPBAR + boardSize) {
+      mana -= towerCost;
       int i = (app.mouseY - App.TOPBAR) / App.CELLSIZE;
       int j = app.mouseX / App.CELLSIZE;
 
@@ -320,36 +268,9 @@ public class GameController {
         float range = gr.initialTowerRange;
         float damage = gr.initialTowerDamage;
         float firingSpeed = gr.initialTowerFiringSpeed;
-        Tower newTower = new Tower(app, App.CELLSIZE, App.CELLSIZE, tiles[i][j].getX(), tiles[i][j].getY(), gr.tower0,
-            gr.tower1, gr.tower2, range, damage, firingSpeed) {
-
-          @Override
-          public void toggleOn() {
-            if (isUpgradeRange == 1 && mana >= (10 + (rangeLv + 1) * 10)) {
-              mana -= 10 + (rangeLv + 1) * 10;
-              rangeLv += 1;
-            }
-            if (isUpgradeFiringSpeed == 1 && mana >= (10 + (firingSpeedLv + 1) * 10)) {
-              mana -= 10 + (firingSpeedLv + 1) * 10;
-              firingSpeedLv += 1;
-            }
-            if (isUpgradeDamage == 1 && mana >= (10 + (damageLv + 1) * 10)) {
-              mana -= 10 + (damageLv + 1) * 10;
-              damageLv += 1;
-            }
-          }
-
-          @Override
-          public void toggleOff() {
-          }
-
-          @Override
-          public void onHover() {
-            shouldShowDamageUpgradeCost = isUpgradeDamage;
-            shouldShowRangeUpgradeCost = isUpgradeRange;
-            shouldShowFiringSpeedUpgradeCost = isUpgradeFiringSpeed;
-          }
-        };
+        Tower newTower = new Tower(app, this, App.CELLSIZE, App.CELLSIZE, tiles[i][j].getX(), tiles[i][j].getY(),
+            gr.tower0, gr.tower1, gr.tower2, range, damage, firingSpeed, isUpgradeRange, isUpgradeFiringSpeed,
+            isUpgradeDamage);
         towers.add(newTower);
         tiles[i][j] = newTower;
       }
@@ -358,5 +279,57 @@ public class GameController {
 
   public List<Tower> getTowers() {
     return towers;
+  }
+
+  public List<Fireball> getFireballs() {
+    return fireballs;
+  }
+
+  public boolean getIsLose() {
+    return isLose;
+  }
+
+  public boolean getIsWin() {
+    return monsters.size() == 0;
+  }
+
+  public int getIsUpgradeRange() {
+    return isUpgradeRange;
+  }
+
+  public int getIsUpgradeDamage() {
+    return isUpgradeDamage;
+  }
+
+  public int getIsUpgradeFiringSpeed() {
+    return isUpgradeFiringSpeed;
+  }
+
+  public void resetState() {
+    monsters = new ArrayList<>();
+    towers = new ArrayList<>();
+    fireballs = new ArrayList<>();
+    waveInfo = new ArrayList<>();
+    buttons = new ArrayList<>();
+
+    gameSpeed = 1;
+    towerMode = false;
+    isUpgradeRange = 0;
+    isUpgradeDamage = 0;
+    isUpgradeFiringSpeed = 0;
+
+    tiles = gr.getTiles();
+    mana = gr.initialMana;
+    manaCap = gr.initialManaCap;
+    manaGainPerSecond = gr.initialManaPerSecond;
+    additionalManaGainMultiplier = 0;
+    poolManaCost = gr.manaPoolSpellInitialCost;
+
+    timer = 0;
+    countDown = 0;
+    isLose = false;
+
+    generateMonsters();
+    generateButtons();
   }
 }

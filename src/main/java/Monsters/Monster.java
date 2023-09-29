@@ -5,10 +5,15 @@ import Navigation.Tuple;
 import Navigation.Vector;
 import Tiles.PathTile;
 import WizardTD.App;
+import WizardTD.GameController;
+import WizardTD.GameResource;
 import processing.core.PImage;
 
 public abstract class Monster {
-  protected App app;
+  protected final float originalSpeed;
+  protected final App app;
+  protected final GameResource gr;
+  protected GameController gc;
   protected PImage image;
   protected float hp;
   protected float speed;
@@ -19,7 +24,6 @@ public abstract class Monster {
   protected int index = 0;
   protected float exceed = 0;
   protected float currentHp;
-  protected float originalSpeed;
 
   protected float initialX = Float.MIN_VALUE;
   protected float initialY = Float.MIN_VALUE;
@@ -27,12 +31,16 @@ public abstract class Monster {
   protected float y = Float.MIN_VALUE;
   protected int width = 20;
   protected int height = 20;
+  protected boolean isDead = false;
+  protected boolean shouldRemove = false;
 
   private final int HEALTH_BAR_HEIGHT = 3;
   private final int HEALTH_BAR_WIDTH = 30;
 
-  public Monster(App app, PImage image, float hp, float speed, float armour, float manaGainedOnKill) {
+  public Monster(App app, GameResource gr, PImage image, float hp, float speed, float armour,
+      float manaGainedOnKill) {
     this.app = app;
+    this.gr = gr;
     this.image = image;
     this.hp = hp;
     this.speed = speed;
@@ -51,17 +59,26 @@ public abstract class Monster {
     speed = originalSpeed * multiplier;
   }
 
+  public void setGameController(GameController gc) {
+    this.gc = gc;
+  }
+
   public void act() {
-    if (x == Float.MIN_VALUE && y == Float.MIN_VALUE) {
-      spawn();
-    } else {
-      if (index == navigation.getRoad().size()) {
+    if (isDead)
+      dead();
+    else {
+      if (x == Float.MIN_VALUE && y == Float.MIN_VALUE) {
         spawn();
       } else {
-        move();
+        if (index == navigation.getRoad().size()) {
+          spawn();
+          gc.dropManaByMonster(currentHp);
+        } else {
+          move();
+        }
       }
+      display();
     }
-    display();
   }
 
   private void move() {
@@ -118,5 +135,39 @@ public abstract class Monster {
     app.image(image, x, y, width, height);
   }
 
+  public float getX() {
+    return x;
+  }
+
+  public float getY() {
+    return y;
+  }
+
+  public float getBodyX() {
+    return x + width / 2;
+  }
+
+  public float getBodyY() {
+    return y + height / 2;
+  }
+
+  public void getHit(float damage) {
+    currentHp -= damage * armour;
+    if (currentHp <= 0) {
+      isDead = true;
+      gc.gainMana(manaGainedOnKill);
+    }
+  }
+
+  public boolean getShouldRemove() {
+    return shouldRemove;
+  }
+
+  public boolean isDead() {
+    return isDead;
+  }
+
   public abstract Monster duplicate();
+
+  public abstract void dead();
 }
