@@ -7,6 +7,7 @@ import Button.Button;
 import Fireball.Fireball;
 import Monsters.Monster;
 import Navigation.Tuple;
+import Slider.Slider;
 import Tiles.Tile;
 import Tiles.WizardHouseTile;
 import Towers.Tower;
@@ -16,6 +17,9 @@ public class GameUI {
   private final GameResource gr;
   private final GameController gc;
 
+  private Slider soundEffectVolume;
+  private Slider musicVolume;
+
   private int waveNumber = 0;
   private boolean displayResult = false;
 
@@ -23,11 +27,19 @@ public class GameUI {
     this.app = app;
     this.gr = gr;
     this.gc = gc;
+
+    soundEffectVolume = new Slider(app, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 360, 90, 20, "Sound effect");
+    musicVolume = new Slider(app, App.BOARD_WIDTH * App.CELLSIZE + 10, App.TOPBAR + 410, 90, 20, "Music");
   }
 
   public void gameResult() {
     if (gc.getIsLose()) {
       displayResult = true;
+      gr.music.stop();
+      gr.shoot.stop();
+      gr.shoot1.stop();
+      gr.shoot2.stop();
+      gr.dead.stop();
       app.fill(255, 128);
       app.noStroke();
       app.rect(0, 0, App.WIDTH, App.HEIGHT);
@@ -38,6 +50,11 @@ public class GameUI {
       app.text("Press 'r' to restart", 220, 300);
     } else if (gc.getIsWin()) {
       displayResult = true;
+      gr.music.stop();
+      gr.shoot.stop();
+      gr.shoot1.stop();
+      gr.shoot2.stop();
+      gr.dead.stop();
       app.fill(255, 128);
       app.noStroke();
       app.rect(0, 0, App.WIDTH, App.HEIGHT);
@@ -89,6 +106,9 @@ public class GameUI {
     for (Button button : buttons) {
       button.display();
     }
+
+    soundEffectVolume.display();
+    musicVolume.display();
   }
 
   public void displayBoard() {
@@ -100,6 +120,8 @@ public class GameUI {
         tiles[i][j].display();
       }
     }
+    if (!displayResult)
+      gc.onMouseOnTheBoard();
   }
 
   public void displayMonster() {
@@ -183,8 +205,39 @@ public class GameUI {
       if (gc.getIsLose()) {
         if (app.key == 'r' || app.key == 'R') {
           displayResult = false;
+          gr.music.play();
+          gr.music.loop();
           gc.resetState();
         }
+      }
+    }
+  }
+
+  public void onMouseDragged() {
+    if (!displayResult) {
+      soundEffectVolume.mouseDragged();
+      musicVolume.mouseDragged();
+
+      if (soundEffectVolume.getValue() == 0) {
+        gr.shoot.amp(0.00001f);
+        gr.shoot1.amp(0.00001f);
+        gr.shoot2.amp(0.00001f);
+        gr.dead.amp(0.00001f);
+      } else {
+        gr.shoot.amp(soundEffectVolume.getValue());
+        gr.shoot1.amp(soundEffectVolume.getValue());
+        gr.shoot2.amp(soundEffectVolume.getValue());
+        gr.dead.amp(soundEffectVolume.getValue());
+      }
+
+      if (musicVolume.getValue() == 0) {
+        gr.music.stop();
+      } else {
+        if (!gr.music.isPlaying()) {
+          gr.music.play();
+          gr.music.loop();
+        }
+        gr.music.amp(musicVolume.getValue());
       }
     }
   }

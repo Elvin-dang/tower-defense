@@ -28,6 +28,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
+import processing.sound.SoundFile;
 
 public class GameResource {
   private final App app;
@@ -50,6 +51,11 @@ public class GameResource {
   public final PImage tower2;
   public final PImage wizardHouse;
   public final PImage worm;
+  public final SoundFile shoot;
+  public final SoundFile shoot1;
+  public final SoundFile shoot2;
+  public final SoundFile dead;
+  public final SoundFile music;
 
   private JSONObject json;
 
@@ -97,6 +103,19 @@ public class GameResource {
     tower2 = app.loadImage("src/main/resources/WizardTD/tower2.png");
     wizardHouse = app.loadImage("src/main/resources/WizardTD/wizard_house.png");
     worm = app.loadImage("src/main/resources/WizardTD/worm.png");
+
+    shoot = new SoundFile(app, "src/main/resources/WizardTD/shoot.wav");
+    shoot1 = new SoundFile(app, "src/main/resources/WizardTD/shoot1.wav");
+    shoot2 = new SoundFile(app, "src/main/resources/WizardTD/shoot2.wav");
+    dead = new SoundFile(app, "src/main/resources/WizardTD/dead.wav");
+    music = new SoundFile(app, "src/main/resources/WizardTD/music.wav");
+    shoot.amp(0.5f);
+    shoot1.amp(0.5f);
+    shoot2.amp(0.5f);
+    dead.amp(0.5f);
+    music.amp(0.5f);
+    music.play();
+    music.loop();
 
     json = app.loadJSONObject(configPath);
 

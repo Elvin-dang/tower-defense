@@ -2,7 +2,6 @@ package WizardTD;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import processing.event.MouseEvent;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -61,22 +60,22 @@ public class App extends PApplet {
   }
 
   @Override
-  public void mousePressed(MouseEvent e) {
+  public void mousePressed() {
     gui.onMousePressed();
   }
 
   @Override
-  public void mouseReleased(MouseEvent e) {
+  public void mouseReleased() {
 
   }
 
   @Override
-  public void mouseDragged(MouseEvent e) {
-
+  public void mouseDragged() {
+    gui.onMouseDragged();
   }
 
   @Override
-  public void mouseMoved(MouseEvent e) {
+  public void mouseMoved() {
     gui.onMouseMoved();
   }
 

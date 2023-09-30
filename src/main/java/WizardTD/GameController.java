@@ -258,8 +258,8 @@ public class GameController {
     int boardSize = App.BOARD_WIDTH * App.CELLSIZE;
     int towerCost = (int) gr.towerCost + isUpgradeRange * 20 + isUpgradeDamage * 20 + isUpgradeFiringSpeed * 20;
 
-    if (towerMode && mana >= towerCost && app.mouseX >= 0 && app.mouseX <= boardSize && app.mouseY >= App.TOPBAR
-        && app.mouseY <= App.TOPBAR + boardSize) {
+    if (towerMode && mana >= towerCost && app.mouseX >= 0 && app.mouseX < boardSize && app.mouseY >= App.TOPBAR
+        && app.mouseY < App.TOPBAR + boardSize) {
       int i = (app.mouseY - App.TOPBAR) / App.CELLSIZE;
       int j = app.mouseX / App.CELLSIZE;
 
@@ -274,6 +274,29 @@ public class GameController {
         newTower.setSpeed(gameSpeed);
         towers.add(newTower);
         tiles[i][j] = newTower;
+      }
+    }
+  }
+
+  public void onMouseOnTheBoard() {
+    int boardSize = App.BOARD_WIDTH * App.CELLSIZE;
+    int towerCost = (int) gr.towerCost + isUpgradeRange * 20 + isUpgradeDamage * 20 + isUpgradeFiringSpeed * 20;
+
+    if (towerMode && app.mouseX >= 0 && app.mouseX < boardSize && app.mouseY >= App.TOPBAR
+        && app.mouseY < App.TOPBAR + boardSize) {
+      int i = (app.mouseY - App.TOPBAR) / App.CELLSIZE;
+      int j = app.mouseX / App.CELLSIZE;
+
+      if (tiles[i][j] instanceof GrassTile) {
+        if (mana >= towerCost) {
+          app.fill(67, 255, 143, 200);
+          app.noStroke();
+          app.rect(tiles[i][j].getX(), tiles[i][j].getY(), tiles[i][j].getWidth(), tiles[i][j].getHeight(), 4);
+        } else {
+          app.fill(255, 67, 80, 200);
+          app.noStroke();
+          app.rect(tiles[i][j].getX(), tiles[i][j].getY(), tiles[i][j].getWidth(), tiles[i][j].getHeight(), 4);
+        }
       }
     }
   }

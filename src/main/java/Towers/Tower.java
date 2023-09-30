@@ -127,7 +127,6 @@ public class Tower extends Tile implements Clickable, Hoverable {
 
   public void shoot(List<Tuple<Long, Monster>> monsters, List<Fireball> fireballs) {
     if (timer >= 1000 / (firingSpeed + 0.5 * firingSpeedLv)) {
-      timer = 0;
       Monster nearestMonster = null;
       double minDistance = Float.MAX_VALUE;
       for (Tuple<Long, Monster> tuple : monsters) {
@@ -141,11 +140,23 @@ public class Tower extends Tile implements Clickable, Hoverable {
         }
       }
       if (nearestMonster != null) {
+        timer = 0;
+        playSoundEffect();
         fireballs.add(new Fireball(app, x + width / 2, y + height / 2, 6, 6, damage * (1 + damageLv / 2),
             nearestMonster, app.gr.fireball));
       }
     }
     timer += timeMultiplier * 1000 / App.FPS;
+  }
+
+  private void playSoundEffect() {
+    if (rangeLv >= 2 && firingSpeedLv >= 2 && damageLv >= 2) {
+      app.gr.shoot2.play();
+    } else if (rangeLv >= 1 && firingSpeedLv >= 1 && damageLv >= 1) {
+      app.gr.shoot1.play();
+    } else {
+      app.gr.shoot.play();
+    }
   }
 
   @Override

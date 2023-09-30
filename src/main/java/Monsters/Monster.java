@@ -155,6 +155,7 @@ public abstract class Monster {
     currentHp -= damage * armour;
     if (currentHp <= 0) {
       isDead = true;
+      gr.dead.play();
       gc.gainMana(manaGainedOnKill);
     }
   }

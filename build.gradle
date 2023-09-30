@@ -19,12 +19,18 @@ repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
     mavenCentral()
+    flatDir {
+      dirs 'libs'
+    }
 }
 
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:28.0-jre'
     implementation 'org.processing:core:3.3.7'
+    implementation name: 'sound'
+    implementation name: 'jsyn-20171016'
+    implementation name: 'javamp3-1.0.4'
     // implementation 'org.reflections:reflections:0.10.2'
 
     // Use JUnit Jupiter API for testing.
