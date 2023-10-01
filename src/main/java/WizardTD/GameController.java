@@ -314,7 +314,12 @@ public class GameController {
   }
 
   public boolean getIsWin() {
-    return monsters.size() == 0;
+    if (monsters.size() == 0) {
+      changeGameSpeed(0);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public int getIsUpgradeRange() {

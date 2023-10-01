@@ -153,9 +153,10 @@ public abstract class Monster {
 
   public void getHit(float damage) {
     currentHp -= damage * armour;
-    if (currentHp <= 0) {
+    if (currentHp <= 0 && !isDead) {
       isDead = true;
-      gr.dead.play();
+      if (!gr.dead.isPlaying())
+        gr.dead.play();
       gc.gainMana(manaGainedOnKill);
     }
   }

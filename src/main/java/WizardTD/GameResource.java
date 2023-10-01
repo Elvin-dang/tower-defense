@@ -109,6 +109,10 @@ public class GameResource {
     shoot2 = new SoundFile(app, "src/main/resources/WizardTD/shoot2.wav");
     dead = new SoundFile(app, "src/main/resources/WizardTD/dead.wav");
     music = new SoundFile(app, "src/main/resources/WizardTD/music.wav");
+    shoot.rate(App.FPS);
+    shoot1.rate(App.FPS);
+    shoot2.rate(App.FPS);
+    dead.rate(App.FPS);
     shoot.amp(0.5f);
     shoot1.amp(0.5f);
     shoot2.amp(0.5f);

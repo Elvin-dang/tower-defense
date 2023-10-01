@@ -151,11 +151,14 @@ public class Tower extends Tile implements Clickable, Hoverable {
 
   private void playSoundEffect() {
     if (rangeLv >= 2 && firingSpeedLv >= 2 && damageLv >= 2) {
-      app.gr.shoot2.play();
+      if (!app.gr.shoot2.isPlaying())
+        app.gr.shoot2.play();
     } else if (rangeLv >= 1 && firingSpeedLv >= 1 && damageLv >= 1) {
-      app.gr.shoot1.play();
+      if (!app.gr.shoot1.isPlaying())
+        app.gr.shoot1.play();
     } else {
-      app.gr.shoot.play();
+      if (!app.gr.shoot.isPlaying())
+        app.gr.shoot.play();
     }
   }
 
