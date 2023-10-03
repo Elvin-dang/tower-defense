@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import Errors.InvalidInputFileException;
 import Monsters.Beetle;
 import Monsters.Gremlin;
 import Monsters.Monster;
@@ -169,12 +168,12 @@ public class GameResource {
                 j * App.CELLSIZE - 8,
                 i * App.CELLSIZE - 8 + App.TOPBAR, wizardHouse, grass);
           } else
-            throw new InvalidInputFileException(layout);
+            throw new IllegalArgumentException("Invalid file input " + layout + " provided");
         }
       }
     } catch (FileNotFoundException e) {
       PApplet.println(e);
-    } catch (InvalidInputFileException e) {
+    } catch (IllegalArgumentException e) {
       PApplet.println(e);
     } finally {
       if (sc != null)
