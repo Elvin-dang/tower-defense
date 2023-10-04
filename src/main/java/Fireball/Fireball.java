@@ -5,8 +5,8 @@ import WizardTD.App;
 import processing.core.PImage;
 
 public class Fireball {
-  private final float originalSpeed = 5;
-  private final App app;
+  private final float ORIGINAL_SPEED = 5;
+  private App app;
   private float x;
   private float y;
   private int width;
@@ -15,7 +15,7 @@ public class Fireball {
   private Monster target;
   private PImage image;
 
-  private float speed = originalSpeed;
+  private float speed = ORIGINAL_SPEED;
   private boolean isHitTarget = false;
 
   public Fireball(App app, float x, float y, int width, int height, float damage, Monster target, PImage image) {
@@ -47,7 +47,7 @@ public class Fireball {
   }
 
   public void setSpeed(float multiplier) {
-    speed = originalSpeed * multiplier;
+    speed = ORIGINAL_SPEED * multiplier;
   }
 
   public boolean getIsHitTarget() {

@@ -16,9 +16,4 @@ public class Tuple<T, N> {
   public N getValue() {
     return value;
   }
-
-  @Override
-  public String toString() {
-    return "Tuple [key=" + key + ", value=" + value + "]";
-  }
 }

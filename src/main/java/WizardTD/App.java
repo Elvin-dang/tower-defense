@@ -7,8 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-import java.util.*;
-
 public class App extends PApplet {
 
   public static final int CELLSIZE = 32;
@@ -22,8 +20,6 @@ public class App extends PApplet {
   public static final int FPS = 60;
 
   public String configPath;
-
-  public Random random = new Random();
 
   /* Additional attributes */
 
@@ -55,18 +51,8 @@ public class App extends PApplet {
   }
 
   @Override
-  public void keyReleased() {
-
-  }
-
-  @Override
   public void mousePressed() {
     gui.onMousePressed();
-  }
-
-  @Override
-  public void mouseReleased() {
-
   }
 
   @Override

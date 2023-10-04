@@ -21,9 +21,4 @@ public class Navigation {
     return road;
   }
 
-  @Override
-  public String toString() {
-    return "Navigation [spawnTile=" + spawnTile + ", road=" + road + "]";
-  }
-
 }

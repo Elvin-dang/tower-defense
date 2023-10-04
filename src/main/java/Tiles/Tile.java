@@ -4,9 +4,9 @@ import WizardTD.App;
 import processing.core.PImage;
 
 public abstract class Tile {
-  protected final App app;
-  protected final int height;
-  protected final int width;
+  protected App app;
+  protected int height;
+  protected int width;
   protected int x;
   protected int y;
   protected PImage image;

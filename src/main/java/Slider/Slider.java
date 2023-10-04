@@ -3,10 +3,14 @@ package Slider;
 import WizardTD.App;
 
 public class Slider {
-  private final App app;
-  private float x, y, width, height;
+  private App app;
+  private float x;
+  private float y;
+  private float width;
+  private float height;
   private float handlePos;
-  private float min, max;
+  private float min;
+  private float max;
   private String title;
 
   public Slider(App app, float x, float y, float width, float height, String title) {

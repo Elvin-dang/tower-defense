@@ -18,6 +18,17 @@ public class Beetle extends Monster {
 
   @Override
   public void dead() {
-    shouldRemove = true;
+    if (deadFrame < 4)
+      app.image(gr.beetle, x, y, WIDTH, HEIGHT);
+    else if (deadFrame < 8) {
+    } else if (deadFrame < 12)
+      app.image(gr.beetle, x, y, WIDTH, HEIGHT);
+    else if (deadFrame < 16) {
+    } else if (deadFrame < 20)
+      app.image(gr.beetle, x, y, WIDTH, HEIGHT);
+    else {
+      shouldRemove = true;
+    }
+    deadFrame++;
   }
 }

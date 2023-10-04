@@ -23,14 +23,14 @@ import Tiles.Tile;
 import Towers.Tower;
 
 public class GameController {
-  private final App app;
-  private final GameResource gr;
+  private App app;
+  private GameResource gr;
 
   private int gameSpeed = 1;
   private boolean towerMode = false;
   private int isUpgradeRange = 0;
-  private int isUpgradeDamage = 0;
   private int isUpgradeFiringSpeed = 0;
+  private int isUpgradeDamage = 0;
 
   private float manaCap;
   private float mana;
@@ -142,10 +142,6 @@ public class GameController {
     return tiles;
   }
 
-  public boolean isTowerMode() {
-    return towerMode;
-  }
-
   public void setTowerMode(boolean towerMode) {
     this.towerMode = towerMode;
   }
@@ -154,12 +150,12 @@ public class GameController {
     this.isUpgradeRange = isUpgradeRange;
   }
 
-  public void setIsUpgradeDamage(int isUpgradeDamage) {
-    this.isUpgradeDamage = isUpgradeDamage;
-  }
-
   public void setIsUpgradeFiringSpeed(int isUpgradeFiringSpeed) {
     this.isUpgradeFiringSpeed = isUpgradeFiringSpeed;
+  }
+
+  public void setIsUpgradeDamage(int isUpgradeDamage) {
+    this.isUpgradeDamage = isUpgradeDamage;
   }
 
   public int getGameSpeed() {
@@ -242,16 +238,16 @@ public class GameController {
     return poolManaCost;
   }
 
-  public void setAdditionalManaGainMultiplier(float additionalManaGainMultiplier) {
-    this.additionalManaGainMultiplier = additionalManaGainMultiplier;
+  public void setPoolManaCost(float poolManaCost) {
+    this.poolManaCost = poolManaCost;
   }
 
   public float getAdditionalManaGainMultiplier() {
     return additionalManaGainMultiplier;
   }
 
-  public void setPoolManaCost(float poolManaCost) {
-    this.poolManaCost = poolManaCost;
+  public void setAdditionalManaGainMultiplier(float additionalManaGainMultiplier) {
+    this.additionalManaGainMultiplier = additionalManaGainMultiplier;
   }
 
   public void onMouseClickedOnTheBoard() {
@@ -326,12 +322,12 @@ public class GameController {
     return isUpgradeRange;
   }
 
-  public int getIsUpgradeDamage() {
-    return isUpgradeDamage;
-  }
-
   public int getIsUpgradeFiringSpeed() {
     return isUpgradeFiringSpeed;
+  }
+
+  public int getIsUpgradeDamage() {
+    return isUpgradeDamage;
   }
 
   public void resetState() {

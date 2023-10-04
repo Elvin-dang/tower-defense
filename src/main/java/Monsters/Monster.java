@@ -10,15 +10,15 @@ import WizardTD.GameResource;
 import processing.core.PImage;
 
 public abstract class Monster {
-  protected final float originalSpeed;
-  protected final App app;
-  protected final GameResource gr;
+  protected App app;
+  protected GameResource gr;
   protected GameController gc;
   protected PImage image;
   protected float hp;
   protected float speed;
   protected float armour;
   protected float manaGainedOnKill;
+  protected float originalSpeed;
   protected Navigation navigation;
 
   protected int index = 0;
@@ -29,16 +29,16 @@ public abstract class Monster {
   protected float initialY = Float.MIN_VALUE;
   protected float x = Float.MIN_VALUE;
   protected float y = Float.MIN_VALUE;
-  protected int width = 20;
-  protected int height = 20;
+  protected final int WIDTH = 20;
+  protected final int HEIGHT = 20;
   protected boolean isDead = false;
   protected boolean shouldRemove = false;
+  protected int deadFrame = 0;
 
   private final int HEALTH_BAR_HEIGHT = 3;
   private final int HEALTH_BAR_WIDTH = 30;
 
-  public Monster(App app, GameResource gr, PImage image, float hp, float speed, float armour,
-      float manaGainedOnKill) {
+  public Monster(App app, GameResource gr, PImage image, float hp, float speed, float armour, float manaGainedOnKill) {
     this.app = app;
     this.gr = gr;
     this.image = image;
@@ -107,17 +107,17 @@ public abstract class Monster {
   private void spawn() {
     PathTile spawnTile = (PathTile) navigation.getSpawnTile();
     if (spawnTile.getStart() == Vector.DOWN) {
-      x = spawnTile.getX() + ((spawnTile.getWidth() - width) / 2);
-      y = spawnTile.getY() - height;
+      x = spawnTile.getX() + ((spawnTile.getWidth() - WIDTH) / 2);
+      y = spawnTile.getY() - HEIGHT;
     } else if (spawnTile.getStart() == Vector.UP) {
-      x = spawnTile.getX() + ((spawnTile.getWidth() - width) / 2);
+      x = spawnTile.getX() + ((spawnTile.getWidth() - WIDTH) / 2);
       y = spawnTile.getY() + spawnTile.getHeight();
     } else if (spawnTile.getStart() == Vector.LEFT) {
       x = spawnTile.getX() + spawnTile.getWidth();
-      y = spawnTile.getY() + ((spawnTile.getHeight() - height) / 2);
+      y = spawnTile.getY() + ((spawnTile.getHeight() - HEIGHT) / 2);
     } else if (spawnTile.getStart() == Vector.RIGHT) {
-      x = spawnTile.getX() - width;
-      y = spawnTile.getY() + ((spawnTile.getHeight() - height) / 2);
+      x = spawnTile.getX() - WIDTH;
+      y = spawnTile.getY() + ((spawnTile.getHeight() - HEIGHT) / 2);
     }
     initialX = x;
     initialY = y;
@@ -128,11 +128,11 @@ public abstract class Monster {
   private void display() {
     app.fill(253, 1, 3);
     app.noStroke();
-    app.rect(x - (HEALTH_BAR_WIDTH - width) / 2, y - HEALTH_BAR_HEIGHT - 1, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
+    app.rect(x - (HEALTH_BAR_WIDTH - WIDTH) / 2, y - HEALTH_BAR_HEIGHT - 1, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
     app.fill(45, 251, 74);
-    app.rect(x - (HEALTH_BAR_WIDTH - width) / 2, y - HEALTH_BAR_HEIGHT - 1, currentHp / hp * HEALTH_BAR_WIDTH,
+    app.rect(x - (HEALTH_BAR_WIDTH - WIDTH) / 2, y - HEALTH_BAR_HEIGHT - 1, currentHp / hp * HEALTH_BAR_WIDTH,
         HEALTH_BAR_HEIGHT);
-    app.image(image, x, y, width, height);
+    app.image(image, x, y, WIDTH, HEIGHT);
   }
 
   public float getX() {
@@ -144,11 +144,11 @@ public abstract class Monster {
   }
 
   public float getBodyX() {
-    return x + width / 2;
+    return x + WIDTH / 2;
   }
 
   public float getBodyY() {
-    return y + height / 2;
+    return y + HEIGHT / 2;
   }
 
   public void getHit(float damage) {

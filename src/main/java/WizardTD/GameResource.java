@@ -30,31 +30,31 @@ import processing.data.JSONObject;
 import processing.sound.SoundFile;
 
 public class GameResource {
-  private final App app;
-  public final PImage beetle;
-  public final PImage fireball;
-  public final PImage grass;
-  public final PImage gremlin;
-  public final PImage gremlin1;
-  public final PImage gremlin2;
-  public final PImage gremlin3;
-  public final PImage gremlin4;
-  public final PImage gremlin5;
-  public final PImage path0;
-  public final PImage path1;
-  public final PImage path2;
-  public final PImage path3;
-  public final PImage shrub;
-  public final PImage tower0;
-  public final PImage tower1;
-  public final PImage tower2;
-  public final PImage wizardHouse;
-  public final PImage worm;
-  public final SoundFile shoot;
-  public final SoundFile shoot1;
-  public final SoundFile shoot2;
-  public final SoundFile dead;
-  public final SoundFile music;
+  private App app;
+  public PImage beetle;
+  public PImage fireball;
+  public PImage grass;
+  public PImage gremlin;
+  public PImage gremlin1;
+  public PImage gremlin2;
+  public PImage gremlin3;
+  public PImage gremlin4;
+  public PImage gremlin5;
+  public PImage path0;
+  public PImage path1;
+  public PImage path2;
+  public PImage path3;
+  public PImage shrub;
+  public PImage tower0;
+  public PImage tower1;
+  public PImage tower2;
+  public PImage wizardHouse;
+  public PImage worm;
+  public SoundFile shoot;
+  public SoundFile shoot1;
+  public SoundFile shoot2;
+  public SoundFile dead;
+  public SoundFile music;
 
   private JSONObject json;
 
@@ -63,18 +63,18 @@ public class GameResource {
   private List<PathTile> spawnTiles;
   private List<Wave> waves;
 
-  public final String layout;
-  public final float initialTowerRange;
-  public final float initialTowerFiringSpeed;
-  public final float initialTowerDamage;
-  public final float initialMana;
-  public final float initialManaCap;
-  public final float initialManaPerSecond;
-  public final float towerCost;
-  public final float manaPoolSpellInitialCost;
-  public final float manaPoolSpellCostIncreasePerUse;
-  public final float manaPoolSpellCapMultiplier;
-  public final float manaPoolSpellManaGainedMultiplier;
+  public String layout;
+  public float initialTowerRange;
+  public float initialTowerFiringSpeed;
+  public float initialTowerDamage;
+  public float initialMana;
+  public float initialManaCap;
+  public float initialManaPerSecond;
+  public float towerCost;
+  public float manaPoolSpellInitialCost;
+  public float manaPoolSpellCostIncreasePerUse;
+  public float manaPoolSpellCapMultiplier;
+  public float manaPoolSpellManaGainedMultiplier;
 
   public GameResource(App app, String configPath) {
     tiles = new Tile[App.BOARD_WIDTH][App.BOARD_WIDTH];

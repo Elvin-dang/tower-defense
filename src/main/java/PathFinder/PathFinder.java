@@ -13,16 +13,6 @@ public class PathFinder {
     this.tiles = tiles;
   }
 
-  private void resetState() {
-    for (int i = 0; i < tiles.length; i++) {
-      for (int j = 0; j < tiles[i].length; j++) {
-        if (tiles[i][j] instanceof ManipulatedTile) {
-          ((ManipulatedTile) tiles[i][j]).resetState();
-        }
-      }
-    }
-  }
-
   public List<ManipulatedTile> getShortestPath(ManipulatedTile start, ManipulatedTile end) {
     resetState();
     List<ManipulatedTile> visitedTile = new ArrayList<>();
@@ -85,5 +75,15 @@ public class PathFinder {
       current = current.getPrevTile();
     }
     return path;
+  }
+
+  private void resetState() {
+    for (int i = 0; i < tiles.length; i++) {
+      for (int j = 0; j < tiles[i].length; j++) {
+        if (tiles[i][j] instanceof ManipulatedTile) {
+          ((ManipulatedTile) tiles[i][j]).resetState();
+        }
+      }
+    }
   }
 }

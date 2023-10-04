@@ -4,8 +4,8 @@ import WizardTD.App;
 import WizardTD.GameController;
 
 public abstract class Button implements Clickable, Hoverable, HotKeyMountable {
-  protected final App app;
-  protected final GameController gc;
+  protected App app;
+  protected GameController gc;
   protected int x;
   protected int y;
   protected String description;

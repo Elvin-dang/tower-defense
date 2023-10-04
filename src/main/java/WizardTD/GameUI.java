@@ -13,9 +13,9 @@ import Tiles.WizardHouseTile;
 import Towers.Tower;
 
 public class GameUI {
-  private final App app;
-  private final GameResource gr;
-  private final GameController gc;
+  private App app;
+  private GameResource gr;
+  private GameController gc;
 
   private Slider soundEffectVolume;
   private Slider musicVolume;

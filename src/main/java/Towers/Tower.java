@@ -14,26 +14,25 @@ import WizardTD.GameController;
 import processing.core.PImage;
 
 public class Tower extends Tile implements Clickable, Hoverable {
-  private final PImage upgrade1;
-  private final PImage upgrade2;
-  private final GameController gc;
+  private PImage upgrade1;
+  private PImage upgrade2;
+  private GameController gc;
   private float range;
-  private float damage;
   private float firingSpeed;
+  private float damage;
 
-  protected int rangeLv = 0;
-  protected int firingSpeedLv = 0;
-  protected int damageLv = 0;
-  protected boolean isHovered = false;
-  protected int shouldShowRangeUpgradeCost = 0;
-  protected int shouldShowFiringSpeedUpgradeCost = 0;
-  protected int shouldShowDamageUpgradeCost = 0;
-  protected float timeMultiplier = 1;
-  protected long timer = 0;
+  private int rangeLv = 0;
+  private int firingSpeedLv = 0;
+  private int damageLv = 0;
+  private boolean isHovered = false;
+  private int shouldShowRangeUpgradeCost = 0;
+  private int shouldShowFiringSpeedUpgradeCost = 0;
+  private int shouldShowDamageUpgradeCost = 0;
+  private float timeMultiplier = 1;
+  private long timer = 0;
 
   public Tower(App app, GameController gc, int height, int width, int x, int y, PImage image, PImage upgrade1,
-      PImage upgrade2,
-      float range, float damage, float firingSpeed, int rangeLv, int firingSpeedLv, int damageLv) {
+      PImage upgrade2, float range, float damage, float firingSpeed, int rangeLv, int firingSpeedLv, int damageLv) {
     super(app, height, width, x, y, image);
     this.upgrade1 = upgrade1;
     this.upgrade2 = upgrade2;
