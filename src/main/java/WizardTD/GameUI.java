@@ -205,8 +205,10 @@ public class GameUI {
       if (gc.getIsLose()) {
         if (app.key == 'r' || app.key == 'R') {
           displayResult = false;
-          gr.music.play();
-          gr.music.loop();
+          if (musicVolume.getValue() != 0) {
+            gr.music.play();
+            gr.music.loop();
+          }
           gc.resetState();
         }
       }

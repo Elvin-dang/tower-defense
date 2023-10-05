@@ -46,6 +46,9 @@ public class Fireball {
     }
   }
 
+  /**
+   * @param multiplier multiplier for original speed
+   */
   public void setSpeed(float multiplier) {
     speed = ORIGINAL_SPEED * multiplier;
   }

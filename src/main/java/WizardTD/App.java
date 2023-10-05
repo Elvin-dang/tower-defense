@@ -96,6 +96,7 @@ public class App extends PApplet {
    *
    * @param pimg  The image to be rotated
    * @param angle between 0 and 360 degrees
+   * @param pa    PApplet instance
    * @return the new rotated image
    */
   public static PImage rotateImageByDegrees(PImage pimg, double angle, PApplet pa) {
